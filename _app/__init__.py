@@ -85,6 +85,7 @@ def callback_notification():
 
 
     update_order = update_payment(order_id= par['order']['id'], status= response_status)
+    socketio.emit('update_payment_status', {'status': response_status})
 
     if not update_order:
         return {
@@ -103,6 +104,12 @@ def callback_notification():
 def check():
     response = request_check(request.args.get("order_id"))
     return response, 200
+
+
+@socketio.on('client_connect')
+def socket_connect_event(data):
+    print('Socket connect: {}'.format(data))
+
 
 def request_check(order_id: str) -> dict:
     req = requests.get(f'https://devo.finnet.co.id/pg/payment/card/check/{order_id}', headers={
