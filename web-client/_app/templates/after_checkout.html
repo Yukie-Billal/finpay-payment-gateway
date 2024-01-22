@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>After checkout</title>
+    <style>
+        .container {
+            width: 50%;
+            margin: auto auto;
+        }
+        .alert {
+            width: 100%;
+        }
+        .alert .success {
+            padding: 12px;
+            background-color: #14cb14;
+            color: whitesmoke;
+        }
+        .alert .pending {
+            padding: 12px;
+            background-color: #9dcb14;
+            color: whitesmoke;
+        }
+        .alert .danger {
+            padding: 12px;
+            background-color: #f12409;
+            color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Order id: {{ order_id }}</p>
+        <p>Payment code: {{ payment_code }}</p>
+        <button id="check-btn">Cek status pembayaran</button>
+        <div class="alert"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        let socket = io('https://finpay-test-socket.yukbil.my.id');
+        const payment = {
+            order_id: '{{ order_id }}',
+            status: 'PENDING',
+            updated: false
+        }
+        socket.on('connect', function() {
+            socket.emit('client_connect', {data: 'I\'m connected!', id: socket.id});
+        });
+
+        socket.on('update_payment_status', function (data) {
+            payment.updated = true
+            payment.status = data.status
+        })
+
+        const checkButton = document.querySelector('#check-btn')
+        checkButton.addEventListener('click', function (e) {
+            e.preventDefault()
+            fetch('{{ url_for("check") }}?order_id={{order_id}}')
+                .then(res => res.json())
+                .then(data => {
+                    const status = data.status
+                    if (status === 'PENDING') alertPending('Pembayaran masih dalam proses')
+                    if (status === 'PAID') alertSuccess('Pembayaran berhasil')
+                })
+                .catch(e => console.log("Err:",e))
+        })
+
+        const alert = document.querySelector('.alert')
+        function alertPending(msg) {
+            alert.innerHTML = `<div class="pending">${msg}</div>`
+        }
+        function alertSuccess(msg) {
+            alert.innerHTML = `<div class="success">${msg}</div>`
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment success',
+                text: 'Terima kasih telah melakukan pemesanan disini.',
+                showConfirmButton: false,
+                timer: 1700
+            })
+        }
+        function alertCancel(msg) {
+            alert.innerHTML = `<div class="danger">${msg}</div>`
+        }
+
+        document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible' && payment.updated) {
+        payment.updated = false
+        if (payment.status === 'PENDING') alertPending('Pembayaran masih dalam proses')
+        if (payment.status === 'PAID') alertSuccess('Pembayaran berhasil')
+        if (payment.status === 'DECLINE') alertCancel('Pembayaran dibatalkan')
+    } else {
+        // Tab tidak aktif
+    }
+});
+    </script>
+</body>
+</html>

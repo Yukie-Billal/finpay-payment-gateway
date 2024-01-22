@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Input</title>
+    <style>
+        form {
+            margin: auto auto;
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/payment" method="post">
+        <input name="customer_email" placeholder="Email" value="hajar.finnet@gmail.com"/>
+        <input name="customer_first_name" placeholder="First name" value="Hajar"/>
+        <input name="customer_last_name" placeholder="Last name" value="Ismail"/>
+        <input name="customer_mobile_phone" placeholder="Phone number" value="+6281286288844"/>
+        <input name="amount" placeholder="Amount" value="1000"/>
+        <input name="description" placeholder="Deskripsi" value="Testing"/>
+        <select name="payment_method">
+            <option value="vabri">BRI</option>
+            <option value="vabca">BCA</option>
+        </select>
+        <button>
+            Submit
+        </button>
+    </form>
+</body>
+</html>
