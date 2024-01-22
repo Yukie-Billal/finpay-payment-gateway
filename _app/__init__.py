@@ -4,10 +4,12 @@ from datetime import datetime
 
 import requests
 from flask import Flask, render_template, request, redirect
+from flask_socketio import SocketIO
 
 from _app.utils.json_data import save_json, update_payment
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 
 @app.route('/')
