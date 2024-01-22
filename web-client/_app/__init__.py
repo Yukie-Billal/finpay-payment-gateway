@@ -71,7 +71,7 @@ def callback_notification():
         return {'message': 'Invalid request body type'}, 400
     thread_timeout_second = 600 # 10 minute
     loop_status = True
-    response_status = ''
+    response_status = None
 
     def status_check_wrapper():
         nonlocal response_status
@@ -82,7 +82,7 @@ def callback_notification():
         thread.start()
 
         thread.join(timeout=thread_timeout_second)
-        if response_status in ['PAID', 'DECLINE', 'CANCEL']:
+        if response_status:
             loop_status = False
         else: pass
 
