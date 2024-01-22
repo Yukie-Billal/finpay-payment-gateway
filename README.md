@@ -8,3 +8,11 @@
   <img src="https://img.shields.io/badge/Nodejs-18.18.2-17B72C?style=flat-square&logo=nodedotjs" />
   <img src="https://img.shields.io/badge/json-EFDD13?style=flat-square" />
 </p>
+
+
+### Desc
+- Using sandbox
+- Payment by simulator
+
+
+# Note: Learning Purpose only
