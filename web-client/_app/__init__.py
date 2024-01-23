@@ -39,7 +39,8 @@ def payment():
         },
         "order": {
             "id": f"{order_id}",
-            "amount": par['amount'],
+            "amount": par['total_amount'],
+            "surcharge_amount": par['surcharge_amount'],
             "currency": "IDR",
             "description": par['description']
         },
