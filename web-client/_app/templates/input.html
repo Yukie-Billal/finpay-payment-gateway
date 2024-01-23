@@ -58,25 +58,24 @@
         <button class="btn btn-success">Submit</button>
     </form>
     <script>
-        const banks = JSON.parse('{{banks}}'.replaceAll('&#34;', '"'))
+        const paymentMethods = JSON.parse('{{payment_methods}}'.replaceAll('&#34;', '"'))
 
-        const allBanksNames = banks.reduce((accumulator, currentValue) => {
-            const names = currentValue.banks.map(bank => bank.name)
-            return accumulator.concat(names)
+        const allBanksNames = paymentMethods.reduce((accumulator, currentValue) => {
+            const bank = currentValue.banks.map(bank => ({name: bank.name, code: bank.code}))
+            return accumulator.concat(bank)
         }, [])
 
-        document.querySelector('#payment_method').innerHTML = allBanksNames.reduce((accumulator, currentValue) => accumulator + `<option value="${currentValue}">${currentValue}</option>`, '')
-
+        document.querySelector('#payment_method').innerHTML = allBanksNames.reduce((accumulator, currentValue) => accumulator + `<option value="${currentValue.code}">${currentValue.name}</option>`, '')
 
         function calcTotalAmount() {
             const surchargeAmountHTML = document.querySelector('#surcharge_amount')
             const totalAmountHTML = document.querySelector('#total_amount')
             const amount = document.querySelector('#amount').value
-            const selectedBankName = document.querySelector('#payment_method').value
+            const selectedBankCode = document.querySelector('#payment_method').value
 
             let surchargeAmount = 0
-            banks.map(type => {
-                const bankObject = type.banks.filter(bank => bank.name === selectedBankName)
+            paymentMethods.map(type => {
+                const bankObject = type.banks.filter(bank => bank.code === selectedBankCode)
                 if (bankObject.length > 0) {
                     surchargeAmount = (parseInt(amount) * (bankObject[0].surcharge_percentage || 0)) + bankObject[0].surcharge
                 }

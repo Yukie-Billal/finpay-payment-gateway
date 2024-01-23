@@ -18,8 +18,8 @@ SOCKET_SERVICE_KEY=os.getenv('SOCKET_SERVICE_KEY')
 
 @app.route('/')
 def input_payment():
-    banks :list = BankResource.get_all()
-    return render_template('input.html', banks=json.dumps(banks))
+    payment_methods :list = BankResource.get_all()
+    return render_template('input.html', payment_methods=json.dumps(payment_methods))
 
 
 @app.route('/payment', methods=['POST'])
