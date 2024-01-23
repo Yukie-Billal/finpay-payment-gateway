@@ -108,13 +108,6 @@ def check():
     response = request_check(request.args.get("order_id"))
     return response, 200
 
-@app.route('/check_socket')
-def check():
-    socket_hit({
-        'status': 'PENDING'
-    }, channel='update_payment_status')
-    return {'message': 'request to socket send'}, 200
-
 
 def request_check(order_id: str) -> dict:
     req = requests.get(f'https://devo.finnet.co.id/pg/payment/card/check/{order_id}', headers={
