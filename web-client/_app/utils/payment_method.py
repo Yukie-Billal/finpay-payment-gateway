@@ -4,7 +4,7 @@ import os.path
 
 
 class BankResource:
-    filename = 'banks.json'
+    filename = 'payment_method.json'
     file_path = '_app/static/data/'
 
     @classmethod

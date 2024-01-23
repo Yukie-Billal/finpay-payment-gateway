@@ -8,7 +8,7 @@ import requests
 from flask import Flask, render_template, request, redirect
 
 from _app.utils.order_data import save_json, update_payment
-from _app.utils.bank_data import BankResource
+from _app.utils.payment_method import BankResource
 
 load_dotenv()
 app = Flask(__name__)
@@ -40,7 +40,8 @@ def payment():
         "order": {
             "id": f"{order_id}",
             "amount": par['total_amount'],
-            "surcharge_amount": par['surcharge_amount'],
+            "surchargeAmount": par['surcharge_amount'],
+            "itemAmount`": par['amount'],
             "currency": "IDR",
             "description": par['description']
         },
@@ -51,11 +52,11 @@ def payment():
             "type": par['payment_method']
         }
     }
-    req = requests.post('https://devo.finnet.co.id/pg/payment/card/initiate', data=json.dumps(payload), headers={
-        'Authorization': F'Basic {FINNET_AUTH_KEY}',
-        'Content-Type': 'application/json'
-    })
     try:
+        req = requests.post('https://devo.finnet.co.id/pg/payment/card/initiate', data=json.dumps(payload), headers={
+            'Authorization': F'Basic {FINNET_AUTH_KEY}',
+            'Content-Type': 'application/json'
+        })
         response = req.json()
         return redirect(f'/after_payment?order_id={order_id}&payment_code={response["paymentCode"]}')
     except Exception as e:

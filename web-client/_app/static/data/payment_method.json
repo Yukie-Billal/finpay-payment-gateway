@@ -1,0 +1,139 @@
+[
+  {
+    "type": "Virtual account",
+    "banks": [
+      {
+        "name": "BCA",
+        "surcharge": 3500,
+        "code": "vabca"
+      },
+      {
+        "name": "BRI",
+        "surcharge": 3500,
+        "code": "vabri"
+      },
+      {
+        "name": "BNI",
+        "surcharge": 3500,
+        "code": "vabni"
+      },
+      {
+        "name": "BTN",
+        "surcharge": 3500,
+        "code": "vabtn"
+      },
+      {
+        "name": "MANDIRI",
+        "surcharge": 3500,
+        "code": "vamandiri"
+      },
+      {
+        "name": "BSI",
+        "surcharge": 3500,
+        "code": "vabsi"
+      },
+      {
+        "name": "BJB",
+        "surcharge": 3500,
+        "code": "vabjb"
+      },
+      {
+        "name": "PERMATA BANK",
+        "surcharge": 3500,
+        "code": "vapermata"
+      },
+      {
+        "name": "MAYBANK",
+        "surcharge": 3500,
+        "code": "vamaybank"
+      },
+      {
+        "name": "BANKMEGA",
+        "surcharge": 3500,
+        "code": "vamega"
+      },
+      {
+        "name": "BNC",
+        "surcharge": 3500,
+        "code": "vabnc"
+      }
+    ]
+  },
+  {
+    "type": "Instant payment",
+    "banks": [
+      {
+        "name": "PERMATANET",
+        "surcharge": 4000,
+        "code": "permatanet"
+      },
+      {
+        "name": "ATM BERSAMA",
+        "surcharge": 2000,
+        "surcharge_percentage": 0.016,
+        "code": "bsecure"
+      }
+    ]
+  },
+  {
+    "type": "E-money / E-wallet",
+    "banks": [
+      {
+        "name": "LINK AJA",
+        "surcharge": 3500,
+        "code": "linkaja"
+      },
+      {
+        "name": "PAY MONEY",
+        "surcharge": 500,
+        "code": "finpaymoney"
+      },
+      {
+        "name": "DANA",
+        "surcharge": 0,
+        "surcharge_percentage": 0.015,
+        "code": "dana"
+      },
+      {
+        "name": "OVO",
+        "surcharge": 0,
+        "surcharge_percentage": 0.015,
+        "code": "ovo"
+      },
+      {
+        "name": "SHOPEE PAY",
+        "surcharge": 0,
+        "surcharge_percentage": 0.02,
+        "code": "shopeepay"
+      }
+    ]
+  },
+  {
+    "type": "QRIS",
+    "banks": [
+      {
+        "name": "QRIS",
+        "surcharge": 0,
+        "surcharge_percentage": 0.007,
+        "code": "qris"
+      }
+    ]
+  },
+  {
+    "type": "Paylater & Installments",
+    "banks": [
+      {
+        "name": "INDODANA",
+        "surcharge": 0,
+        "surcharge_percentage": 0.01,
+        "code": "indodana"
+      },
+      {
+        "name": "KREDIVO",
+        "surcharge": 0,
+        "surcharge_percentage": 0.023,
+        "code": "kredivo"
+      }
+    ]
+  }
+]
