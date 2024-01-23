@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 import requests
 from flask import Flask, render_template, request, redirect
 
-from _app.utils.json_data import save_json, update_payment
+from _app.utils.order_data import save_json, update_payment
+from _app.utils.bank_data import BankResource
 
 load_dotenv()
 app = Flask(__name__)
@@ -16,8 +17,9 @@ FINNET_AUTH_KEY=os.getenv('FINNET_AUTH_KEY')
 SOCKET_SERVICE_KEY=os.getenv('SOCKET_SERVICE_KEY')
 
 @app.route('/')
-def input():
-    return render_template('input.html')
+def input_payment():
+    banks :list = BankResource.get_all()
+    return render_template('input.html', banks=json.dumps(banks))
 
 
 @app.route('/payment', methods=['POST'])

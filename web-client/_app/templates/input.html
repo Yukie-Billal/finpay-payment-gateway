@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Input</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         form {
             margin: auto auto;
@@ -16,20 +17,72 @@
     </style>
 </head>
 <body>
-    <form action="/payment" method="post">
-        <input name="customer_email" placeholder="Email" value="hajar.finnet@gmail.com"/>
-        <input name="customer_first_name" placeholder="First name" value="Hajar"/>
-        <input name="customer_last_name" placeholder="Last name" value="Ismail"/>
-        <input name="customer_mobile_phone" placeholder="Phone number" value="+6281286288844"/>
-        <input name="amount" placeholder="Amount" value="1000"/>
-        <input name="description" placeholder="Deskripsi" value="Testing"/>
-        <select name="payment_method">
-            <option value="vabri">BRI</option>
-            <option value="vabca">BCA</option>
-        </select>
-        <button>
-            Submit
-        </button>
+    <form action="/payment" method="post" class="py-3 px-2">
+        <h1 class="text-center mb-4">Halaman checkout</h1>
+        <div class="form-group">
+            <label for="customer_email">Email</label>
+            <input name="customer_email" id="customer_email" placeholder="Email" value="hajar.finnet@gmail.com"  class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="customer_first_name">First name</label>
+            <input name="customer_first_name" id="customer_first_name" placeholder="First name" value="Hajar" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="customer_last_name">Last name</label>
+            <input name="customer_last_name" id="customer_last_name" placeholder="Last name" value="Ismail" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="customer_mobile_phone">Phone number</label>
+            <input name="customer_mobile_phone" id="customer_mobile_phone" placeholder="Phone number" value="+6281286288844" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" name="amount" id="amount" placeholder="Amount" value="1000" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input name="description" id="description" placeholder="Deskripsi" value="Testing" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="payment_method">Payment method</label>
+            <select name="payment_method" id="payment_method" class="form-control"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="total_amount">Total price</label>
+            <input type="number" name="total_amount" id="total_amount" disabled value="4500" class="form-control" />
+        </div>
+        <button class="btn btn-success">Submit</button>
     </form>
+    <script>
+        const banks = JSON.parse('{{banks}}'.replaceAll('&#34;', '"'))
+        // let payment_amount = parseInt(document.querySelector('input[name="amount"]').value)
+
+        const allBanksNames = banks.reduce((accumulator, currentValue) => {
+            const names = currentValue.banks.map(bank => bank.name)
+            return accumulator.concat(names)
+        }, [])
+
+        document.querySelector('#payment_method').innerHTML = allBanksNames.reduce((accumulator, currentValue) => accumulator + `<option value="${currentValue}">${currentValue}</option>`, '')
+
+
+        function calcTotalAmount() {
+            const totalAmountHTML = document.querySelector('#total_amount')
+            const amount = document.querySelector('#amount').value
+            const selectedBankName = document.querySelector('#payment_method').value
+
+            let surchargeAmount = 0
+            banks.map(type => {
+                const bankObject = type.banks.filter(bank => bank.name === selectedBankName)
+                if (bankObject.length > 0) {
+                    surchargeAmount = (parseInt(amount) * (bankObject[0].surcharge_percentage || 1)) + bankObject[0].surcharge
+                }
+            }, '')
+            totalAmountHTML.value = parseInt(amount) + surchargeAmount
+        }
+
+        document.querySelector('#payment_method').addEventListener('change', calcTotalAmount)
+        document.querySelector('#amount').addEventListener('change', calcTotalAmount)
+    </script>
 </body>
 </html>
