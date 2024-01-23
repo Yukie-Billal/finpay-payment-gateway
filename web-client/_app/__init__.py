@@ -54,7 +54,7 @@ def payment():
     }
     try:
         req = requests.post('https://devo.finnet.co.id/pg/payment/card/initiate', data=json.dumps(payload), headers={
-            'Authorization': F'Basic {FINNET_AUTH_KEY}',
+            'Authorization': f'Basic {FINNET_AUTH_KEY}',
             'Content-Type': 'application/json'
         })
         response = req.json()
