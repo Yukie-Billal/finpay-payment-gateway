@@ -11,12 +11,12 @@
     <img src="https://img.shields.io/badge/Requests-2.31.0-2965ea?style=flat" alt="b" />
 </p>
 
-## Tech
-- Python 3.11
-
 ## Install
 Use virtual env or not `your choice`
-- pip Install -r requirements.txt
+
+```
+pip Install -r requirements.txt
+```
 
 ## run
 ```

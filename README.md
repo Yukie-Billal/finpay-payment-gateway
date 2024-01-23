@@ -10,9 +10,17 @@
 </p>
 
 
-### Desc
+### Other
 - Using sandbox
 - Payment by simulator
+
+
+## Contribute
+
+- Fork this repo
+- Update code or improve code
+- Pull request from your forked repo to this repo
+- And big thanks for contribute to this repo.
 
 
 # Note: Learning Purpose only

@@ -10,23 +10,21 @@
             width: 50%;
             margin: auto auto;
         }
-        .alert {
+        .alert-wrapper {
             width: 100%;
         }
-        .alert .success {
+        .alert-wrapper>div {
             padding: 12px;
+            color: whitesmoke;
+        }
+        .alert-wrapper .success {
             background-color: #14cb14;
-            color: whitesmoke;
         }
-        .alert .pending {
-            padding: 12px;
-            background-color: #9dcb14;
-            color: whitesmoke;
+        .alert-wrapper .pending {
+            background-color: #dedb14;
         }
-        .alert .danger {
-            padding: 12px;
+        .alert-wrapper .danger {
             background-color: #f12409;
-            color: whitesmoke;
         }
     </style>
 </head>
@@ -35,7 +33,7 @@
         <p>Order id: {{ order_id }}</p>
         <p>Payment code: {{ payment_code }}</p>
         <button id="check-btn">Cek status pembayaran</button>
-        <div class="alert"></div>
+        <div class="alert-wrapper"></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
@@ -55,6 +53,12 @@
         socket.on('update_payment_status', function (data) {
             payment.updated = true
             payment.status = data.status
+            if (document.visibilityState === 'visible') {
+                if (payment.status === 'PENDING') alertPending('Pembayaran masih dalam proses')
+                if (payment.status === 'PAID') alertSuccess('Pembayaran berhasil')
+                if (payment.status === 'DECLINE') alertCancel('Pembayaran dibatalkan')
+                payment.updated = false
+            }
         })
 
         const checkButton = document.querySelector('#check-btn')
@@ -70,7 +74,7 @@
                 .catch(e => console.log("Err:",e))
         })
 
-        const alert = document.querySelector('.alert')
+        const alert = document.querySelector('.alert-wrapper')
         function alertPending(msg) {
             alert.innerHTML = `<div class="pending">${msg}</div>`
         }
@@ -89,15 +93,13 @@
         }
 
         document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'visible' && payment.updated) {
-        payment.updated = false
-        if (payment.status === 'PENDING') alertPending('Pembayaran masih dalam proses')
-        if (payment.status === 'PAID') alertSuccess('Pembayaran berhasil')
-        if (payment.status === 'DECLINE') alertCancel('Pembayaran dibatalkan')
-    } else {
-        // Tab tidak aktif
-    }
-});
+            if (document.visibilityState === 'visible' && payment.updated) {
+                payment.updated = false
+                if (payment.status === 'PENDING') alertPending('Pembayaran masih dalam proses')
+                if (payment.status === 'PAID') alertSuccess('Pembayaran berhasil')
+                if (payment.status === 'DECLINE') alertCancel('Pembayaran dibatalkan')
+            }
+        });
     </script>
 </body>
 </html>
