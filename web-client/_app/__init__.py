@@ -46,12 +46,13 @@ def payment():
             "description": par['description']
         },
         "url": {
-            "callbackUrl": "https://finpay-test.yukbil.my.id/callback_notification"
+            "callbackUrl": "https://haddock-flexible-mouse.ngrok-free.app/callback_notification"
         },
         "sourceOfFunds": {
             "type": par['payment_method']
         }
     }
+    # https://4a43-202-138-236-7.ngrok-free.app
     try:
         req = requests.post('https://devo.finnet.co.id/pg/payment/card/initiate', data=json.dumps(payload), headers={
             'Authorization': f'Basic {FINNET_AUTH_KEY}',
@@ -70,6 +71,7 @@ def after_payment():
 
 @app.route('/callback_notification', methods=['POST'])
 def callback_notification():
+    print("Callback hit")
     par = request.json
     if not par:
         return {'message': 'Invalid request body type'}, 400
@@ -92,7 +94,7 @@ def callback_notification():
 
 
     update_order = update_payment(order_id= par['order']['id'], status= response_status)
-    socket_hit(data={'status': response_status}, channel='update_payment_status')
+    socket_hit(data={'status': response_status, 'order_id': par['order']['id']}, channel='update_payment_status')
 
     if not update_order:
         return {
@@ -128,7 +130,7 @@ def socket_hit(data, channel):
             'channel': channel
         }), headers={
             'API_KEY': SOCKET_SERVICE_KEY,
-            'Origin': 'https://finpay-test.yukbil.my.id',
+            'Origin': 'https://haddock-flexible-mouse.ngrok-free.app',
             'Content-Type': 'application/json'
         })
     except Exception as e:

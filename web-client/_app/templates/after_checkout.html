@@ -7,8 +7,9 @@
     <title>After checkout</title>
     <style>
         .container {
-            width: 50%;
+            width: 60%;
             margin: auto auto;
+            text-align: center;
         }
         .alert-wrapper {
             width: 100%;
@@ -26,12 +27,17 @@
         .alert-wrapper .danger {
             background-color: #f12409;
         }
+        @media (max-width: 1024px) {
+            .container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <p>Order id: {{ order_id }}</p>
-        <p>Payment code: {{ payment_code }}</p>
+        <p>Virtual account: {{ payment_code }}</p>
         <button id="check-btn">Cek status pembayaran</button>
         <div class="alert-wrapper"></div>
     </div>
@@ -47,10 +53,11 @@
             updated: false
         }
         socket.on('connect', function() {
-            socket.emit('client_connect', {data: 'I\'m connected!', id: socket.id});
+            socket.emit('client_connection', {data: 'I\'m connected!', id: socket.id});
         });
 
         socket.on('update_payment_status', function (data) {
+            if (data.order.id !== '{{order_id}}') return
             payment.updated = true
             payment.status = data.status
             if (document.visibilityState === 'visible') {
