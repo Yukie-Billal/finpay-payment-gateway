@@ -35,7 +35,9 @@ app.post('/hit_channel', async (req, res) => {
       if (!req.body.channel) return res.status(400).json({
          message: 'Bad request, invalid channel name'
       })
-      const paymentData = await finpayOrderCheck(req.body.data.order_id)
+      const paymentData = await finpayOrderCheck(req.body.data?.order_id)
+      if (paymentData && req.body.data?.status !== paymentData.result.payment.status) throw new BadRequest('Bad request, invalid status')
+
       io.emit(req.body.channel, {...req.body.data, ...paymentData})
       res.status(200).json({
          message: 'success'
