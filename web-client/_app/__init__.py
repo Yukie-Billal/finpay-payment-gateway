@@ -52,7 +52,6 @@ def payment():
             "type": par['payment_method']
         }
     }
-    # https://4a43-202-138-236-7.ngrok-free.app
     try:
         req = requests.post('https://devo.finnet.co.id/pg/payment/card/initiate', data=json.dumps(payload), headers={
             'Authorization': f'Basic {FINNET_AUTH_KEY}',
@@ -71,7 +70,6 @@ def after_payment():
 
 @app.route('/callback_notification', methods=['POST'])
 def callback_notification():
-    print("Callback hit")
     par = request.json
     if not par:
         return {'message': 'Invalid request body type'}, 400
