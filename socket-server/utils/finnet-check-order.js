@@ -2,8 +2,8 @@ const axios = require('axios')
 
 const FINNET_AUTH_KEY = process.env.FINNET_AUTH_KEY
 
-const finpayOrderCheck = async order_id => {
-  const res = await axios.get(`https://devo.finnet.co.id/pg/payment/card/check/${order_id}`, {
+const finpayOrderCheck = async orderId => {
+  const res = await axios.get(`https://devo.finnet.co.id/pg/payment/card/check/${orderId}`, {
     headers: {
       Authorization: `Basic ${FINNET_AUTH_KEY}`
     }
